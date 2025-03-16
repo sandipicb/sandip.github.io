@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>High Availability & Load Balancing for EC2</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #0073e6;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 24px;
+        }
+
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #0073e6;
+        }
+
+        h3 {
+            color: #0073e6;
+        }
+
+        h4{
+            color: #1294ebda;
+            
+        }
+
+        
+
+        img {
+            width: 60%;
+            height: auto;
+            margin: auto;
+            display: grid;
+            border-radius: 10px;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+
+        .highlight {
+            background: #e6f7ff;
+            padding: 10px;
+            border-left: 5px solid #0073e6;
+            font-weight: bold;
+        }
+
+        .span{
+            color: #03f1c9;
+        }
+        
+    </style>
+</head>
+
+<body>
+    <header>High Availability & Load Balancing for EC2 Workloads
+        <br>
+        <span class="span">
+            By Sandip Charoborty</span>
+        
+    </header>
+    <div class="container">
+        <h2>Overview</h2>
+        <p>This guide explains how to configure high availability for EC2 instances using a Load Balancer and Auto
+            Scaling Group.</p>
+        <img src="AWS High Availability.png" alt="AWS High Availability">
+
+        <div class="section">
+            <h2>Stage 1: Configure EC2 Instances</h2>
+            <div class="highlight">Amazon EC2 provides resizable compute capacity in AWS.</div>
+            <ul>
+                <li>Open AWS Console and navigate to EC2 Dashboard.</li>
+                <li>Click <strong>Launch Instances</strong> and configure as needed.</li>
+                <li>Enable Public IP and set up Security Groups.</li>
+                <li>Use the following User Data script:</li>
+            </ul>
+            <pre>
+#!/bin/bash
+yum update -y
+yum install -y httpd
+systemctl start httpd
+systemctl enable httpd
+echo "&lt;h1&gt;Hello from EC2&lt;/h1&gt;" > /var/www/html/index.html</pre>
+            <img src="EC2 Configuration.png" alt="EC2 Configuration">
+        </div>
+
+        <div class="section">
+            <h2>Stage 2: Configure Target Group & Load Balancer</h2>
+            <ul>
+                <li>Create a <strong>Target Group</strong> and attach EC2 instances.</li>
+                <li>Create an <strong>Application Load Balancer (ALB)</strong>.</li>
+                <li>Attach it to two public subnets for high availability.</li>
+            </ul>
+            <img src="elastic loadbalancer.gif" alt="Load Balancer Configuration">
+        </div>
+
+        <div class="section">
+            <h2>Stage 3: Configure Auto Scaling Group</h2>
+            <ul>
+                <li>Create a Launch Template from an existing EC2 instance.</li>
+                <li>Set up an <strong>Auto Scaling Group</strong> and attach the ALB.</li>
+                <li>Define scaling policies based on CPU Utilization.</li>
+            </ul>
+            <img src="autoscaling.png" alt="Auto Scaling Setup">
+        </div>
+
+        <div class="section">
+            <h2>Manual Scaling vs Auto Scaling</h2>
+            <table border="1" width="100%">
+                <tr>
+                    <th>Feature</th>
+                    <th>Manual Scaling</th>
+                    <th>Auto Scaling</th>
+                </tr>
+                <tr>
+                    <td>Scaling Process</td>
+                    <td>Manual</td>
+                    <td>Automatic</td>
+                </tr>
+                <tr>
+                    <td>Trigger</td>
+                    <td>Admin action</td>
+                    <td>CPU, Traffic</td>
+                </tr>
+                <tr>
+                    <td>Efficiency</td>
+                    <td>Low</td>
+                    <td>High</td>
+                </tr>
+                <tr>
+                    <td>Best for</td>
+                    <td>Predictable workloads</td>
+                    <td>Dynamic workloads</td>
+                </tr>
+            </table>
+        </div>
+
+        <h2>Conclusion</h2>
+        <p>This setup ensures high availability and optimal resource usage while maintaining performance.</p>
+        <div>
+            <h3>For images:</h3>
+            <h4>References :</h4>
+            <ul class="image link">
+                <li>AWS High Availability :
+                    https://bluexp.netapp.com/blog/understanding-aws-high-availability-compute-sql-and-storage</li>
+                    <li>EC2 Configuration: https://cloudiofy.com/amazon-ec2/</li>
+                    <li>Load Balancer Configuration: https://www.kerno.io/aws/elb</li>
+                    <li>Auto Scaling Setup: https://medium.com/@faisalkuzhan/day-17-90-amazon-ec2-automation-auto-scaling-4433ebedc303</li>
+            </ul>
+        </div>
+
+    </div>
+</body>
+
+</html>

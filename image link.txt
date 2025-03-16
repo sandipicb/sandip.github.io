@@ -1,0 +1,6 @@
+For images:
+	References : 
+		AWS High Availability : https://bluexp.netapp.com/blog/understanding-aws-high-availability-compute-sql-and-storage
+		EC2 Configuration: https://cloudiofy.com/amazon-ec2/
+		Load Balancer Configuration: https://www.kerno.io/aws/elb
+		Auto Scaling Setup: https://medium.com/@faisalkuzhan/day-17-90-amazon-ec2-automation-auto-scaling-4433ebedc303
